@@ -1,0 +1,45 @@
+let passwords = [];
+
+function savePassword() {
+  const title = document.getElementById('titleInput').value;
+  const password = document.getElementById('passwordInput').value;
+  
+  if (title.trim() === '' || password.trim() === '') {
+    alert('Please enter both title and password');
+    return;
+  }
+
+  const newPassword = { title, password };
+  passwords.push(newPassword);
+  displayPasswords();
+}
+
+function displayPasswords() {
+  const passwordList = document.getElementById('passwordList');
+  passwordList.innerHTML = '';
+
+  passwords.forEach((entry, index) => {
+    const passwordItem = document.createElement('div');
+    passwordItem.classList.add('password-item');
+    passwordItem.innerHTML = `
+      <div>Title: ${entry.title}</div>
+      <div>Password: ${entry.password}</div>
+      <button onclick="editPassword(${index})">Edit</button>
+      <button onclick="deletePassword(${index})">Delete</button>
+    `;
+    passwordList.appendChild(passwordItem);
+  });
+}
+
+function editPassword(index) {
+  const newPassword = prompt('Enter the new password:');
+  if (newPassword !== null) {
+    passwords[index].password = newPassword;
+    displayPasswords();
+  }
+}
+
+function deletePassword(index) {
+  passwords.splice(index, 1);
+  displayPasswords();
+}
